@@ -7,9 +7,12 @@ function solutionLength = LawnmowerPlanner(scenarioFile, start, plannerType)
         solution = DepthFirstLawnmower(map, plannerType, start);
         titleName = "DFS" + plannerType;
     elseif plannerType == 2
-        solution = RandomLawnmower(map,start);
-        titleName = "Random";
+        solution = RandomLawnmower(map,start, 0);
+        titleName = "Random1";
     elseif plannerType == 3
+        solution = RandomLawnmower(map,start, 1);
+        titleName = "Random2";
+    elseif plannerType == 4
         titleName = "Optimal";
         solution = OptimalLawnmower(map, start);
     end

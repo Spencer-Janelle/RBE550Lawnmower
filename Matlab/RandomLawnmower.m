@@ -1,4 +1,4 @@
-function solution = RandomLawnmower(map, startingPos)
+function solution = RandomLawnmower(map, startingPos, type)
 solution = [startingPos];
 % always go up first, then down, then left then right
 % repeat until all of values that aren't static obstacles have been visited
@@ -26,6 +26,7 @@ while ~done
     if found
         required(idx,:) = [];
     end
+    if type == 0
     dir = randi([0, 3], 1);
     possible = false;
     pos = currPos;
@@ -65,6 +66,20 @@ while ~done
     end
     if possible
         solution = [solution; currPos];
+    end
+    else 
+        [rows, ~] = size(required);
+        randPos = required(randi([1, rows], 1), :);
+        path = AStarNavigate(map, required, currPos, randPos);
+    [rows, ~] = size(path);
+    for i = 1:rows
+        [found, idx] = findIn2dList(required, path(i, :));
+    if found
+        required(idx,:) = [];
+    end
+    end
+    solution = [solution; path];
+    currPos = path(end, :);
     end
 end
 
