@@ -1,4 +1,4 @@
-function map = GenerateScenario(modelNum, size, numObstacles, numMoving)
+function map = GenerateScenario(modelNum, size, numObstacles, numMoving, isQuiet)
    map = [];
    % 0 = no obstacle
    % 2 = static obstacle
@@ -23,10 +23,11 @@ function map = GenerateScenario(modelNum, size, numObstacles, numMoving)
             fprintf('Creating L shaped lawn...\n');
             map = lShapeLawn(size);
             size = size*2;
-            titleName = "L ShapedLawnScenario";
+            titleName = "LShapedLawnScenario";
     end
     map = populateObstacles(map, size, numObstacles, numMoving);
-    animateLawn(map, titleName);
+    writematrix(map, titleName + ".txt");
+    animateLawn(map, titleName, isQuiet);
 end
 
 function [map] = squareLawn(size)
@@ -69,7 +70,7 @@ function map = populateObstacles(map, size, numObstacles, numMoving)
             map(x + 1, y + 1) = 2;
 
         end
-        for i = 0:numMoving
+        for i = 1:numMoving
             typeMove = randi([3,6]);
             [x, y] = getValidObstacle(map, size);
             map(x, y) = typeMove;
@@ -148,7 +149,7 @@ function newMap = iterateLawn(map)
    
 end
 
-function animateLawn(map, titleName)
+function animateLawn(map, titleName, isQuiet)
     f = figure;
     imagesc(map);
     title(titleName);
@@ -157,6 +158,7 @@ function animateLawn(map, titleName)
     cmap = [0 1 0;
         0 0 1; 1 0 0; 1 0 0];
     colormap(cmap);
+    if ~isQuiet
     exportgraphics(f, gifFile);
     
     for i = 1:50
@@ -166,6 +168,7 @@ function animateLawn(map, titleName)
        exportgraphics(f, gifFile, Append=true);
        
         
+    end
     end
         
          
